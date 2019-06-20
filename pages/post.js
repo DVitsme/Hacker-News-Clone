@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import Error from 'next/error';
 import Layout from '../components/Layout';
+import CommentList from '../components/CommentList';
 
 class Post extends React.Component {
   static async getInitialProps({ req, res, query }) {
@@ -35,6 +36,13 @@ class Post extends React.Component {
             <strong>{post.comments_count} comments</strong>
             <strong>{post.time_ago}</strong>
           </div>
+
+          {/* Check if post has comments */}
+          {post.comments.length > 0 ? (
+            <CommentList comments={post.comments} />
+          ) : (
+            <div>No comments for this Post</div>
+          )}
         </main>
 
         <style jsx>
