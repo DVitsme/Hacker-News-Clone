@@ -12,10 +12,10 @@ export default class Index extends React.Component {
     console.log(query);
     try {
       page = Number(query.page) || 1;
-      const res = await fetch(
+      const response = await fetch(
         `https://node-hnapi.herokuapp.com/news?page=${page}`
       );
-      data = await res.json();
+      data = await response.json();
     } catch (err) {
       console.log(err);
       data = [];
@@ -35,6 +35,7 @@ export default class Index extends React.Component {
         title="Hacker News"
         description="A hacker news clone made with next js and coffee"
       >
+        {/* Handle rendering all post you see */}
         <StoryList data={data} />
         <footer>
           {/* If first page dont display Back */}
