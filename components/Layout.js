@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Head from 'next/head';
+import Router from 'next/router';
 
-export default function Layout({ children, title, description }) {
+export default function Layout({ children, title, description, backButton }) {
   return (
     <>
       <Head>
@@ -15,6 +16,11 @@ export default function Layout({ children, title, description }) {
               <span className="main-title">Hacker News - by DVitsme</span>
             </a>
           </Link>
+          {backButton && (
+            <span onClick={() => Router.back()} className="back-button">
+              &#x2b05; Go Back
+            </span>
+          )}
         </nav>
         {children}
       </div>
@@ -27,6 +33,8 @@ export default function Layout({ children, title, description }) {
         nav {
           background: #f60;
           padding: 1em;
+          display: flex;
+          justify-content: space-between;
         }
         nav > * {
           display: inline-block;
@@ -37,6 +45,11 @@ export default function Layout({ children, title, description }) {
         }
         nav .main-title {
           font-weight: bold;
+        }
+        nav .back-button {
+          font-size: 0.9rem;
+          font-weight: 400;
+          cursor: pointer;
         }
       `}</style>
       <style global jsx>{`

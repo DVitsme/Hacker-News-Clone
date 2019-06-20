@@ -26,7 +26,7 @@ class Post extends React.Component {
       <Error statusCode={503} />;
     }
     return (
-      <Layout title={post.title}>
+      <Layout title={post.title} backButton={true}>
         <main>
           <h1 className="post-title">
             <a href={post.url}>{post.title}</a>
