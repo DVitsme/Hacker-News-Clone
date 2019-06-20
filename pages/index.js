@@ -1,24 +1,30 @@
 import fetch from 'isomorphic-fetch';
 import Error from 'next/error';
+import Link from 'next/link';
 
 import StoryList from '../components/StoryList';
 import Layout from '../components/Layout';
 
 export default class Index extends React.Component {
-  static async getInitialProps() {
+  static async getInitialProps({ req, res, query }) {
     let data;
+    let page;
+    console.log(query);
     try {
-      const res = await fetch('https://node-hnapi.herokuapp.com/news?page=1');
+      page = Number(query.page) || 1;
+      const res = await fetch(
+        `https://node-hnapi.herokuapp.com/news?page=${page}`
+      );
       data = await res.json();
     } catch (err) {
       console.log(err);
       data = [];
     }
 
-    return { data };
+    return { page, data };
   }
   render() {
-    const { data } = this.props;
+    const { data, page } = this.props;
 
     if (data.length === 0) {
       return <Error statusCode={503} />;
@@ -30,6 +36,30 @@ export default class Index extends React.Component {
         description="A hacker news clone made with next js and coffee"
       >
         <StoryList data={data} />
+        <footer>
+          {/* If first page dont display Back */}
+          {page === 1 ? null : (
+            <Link href={`/?page=${page - 1}`}>
+              <a className="backOnePage">Back</a>
+            </Link>
+          )}
+          <Link href={`/?page=${page + 1}`}>
+            <a>Next Page ({page + 1})</a>
+          </Link>
+        </footer>
+        <style jsx>{`
+          footer {
+            padding: 1em;
+          }
+          footer a {
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+          }
+          .backOnePage {
+            margin-right: 1em;
+          }
+        `}</style>
       </Layout>
     );
   }
