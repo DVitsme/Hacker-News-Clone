@@ -23,6 +23,21 @@ export default class Index extends React.Component {
 
     return { page, data };
   }
+
+  componentDidMount() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        // see server.js for setup
+        .register('/service-worker.js')
+        .then(registration => {
+          console.log('service worker registration successful', registration);
+        })
+        .catch(error => {
+          console.warn('service worker registration failed', error.message);
+        });
+    }
+  }
+
   render() {
     const { data, page } = this.props;
 
